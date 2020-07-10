@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php require_once('header.php'); ?>
 <body class="view">
 <div class="container inner">
@@ -14,13 +15,21 @@
     <?php
     try {
     //connect to our db 
-    require_once('connect.php'); 
+    require_once('connect.php');
+    
+    //if a value is stored in the session variable, display that information
+    if(isset($_SESSION['name'])) {
+      echo "<h1>".$_SESSION['name']."</h1>";
+    }
+    else {
+      echo "<h1>Unknown User</h1>";
+    }
 
     //set up SQL statement 
     $sql = "SELECT * FROM songs;"; 
 
     //prepare the query 
-    $statement = $db->prepare($sql);
+    $statement = $conn->prepare($sql);
 
     //execute 
     $statement->execute(); 
@@ -29,7 +38,6 @@
     $records = $statement->fetchAll(); 
 
     // echo out the top of the table 
-
     echo "<table class='table'>";
 
     foreach ($records as $record) {
@@ -45,5 +53,6 @@
         echo "<p> $error message </p>"; 
     }
     ?>
+    <a href="destroy.php" class="btn"> Forget Me ! </a>
     </main>
     <?php require_once('footer.php'); ?>

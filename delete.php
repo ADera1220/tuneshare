@@ -8,7 +8,7 @@ try {
     //set up SQL statement 
     $sql = "DELETE FROM songs WHERE user_id = :user_id;"; 
     //prepare statement 
-    $statement = $db->prepare($sql); 
+    $statement = $conn->prepare($sql); 
     //bindParam method
     $statement->bindParam(':user_id', $id ); 
     //execute the statement 

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php require_once('header.php'); ?>
 <body class="add">
 <div class="container inner saved">
@@ -29,6 +30,17 @@
     $photo_size = $_FILES['photo']['size'];
     $id = null;
     $id = filter_input(INPUT_POST, 'user_id');
+
+    //store the user name in $_SESSION
+    $_SESSION['name'] = $first_name." ".$last_name;
+
+    //if a value is stored in the session variable, display that information
+    if(isset($_SESSION['name'])) {
+        echo "<h1>".$_SESSION['name']."</h1>";
+    }
+    else {
+        echo "<h1>Unknown User</h1>";
+    }
 
     //set up a flag variable
     $ok = true;
@@ -100,7 +112,7 @@
                 $sql = "INSERT INTO songs (first_name, last_name, genre, location, email, age, favsong, link, photo) VALUES (:firstname, :lastname, :genre, :location, :email, :age, :favsong,:link, :photo)";
             }
             // Call the prepare method of the PDO object to prepare the query and return a PDOstatement object
-            $statement = $db->prepare($sql);
+            $statement = $conn->prepare($sql);
 
             //fill the placeholders with the 8 input variables using bindParam method 
             $statement->bindParam(':firstname', $first_name);
@@ -138,5 +150,6 @@
     }
     ?>
     <a href="index.php" class="btn btn-lg btn-secondary orange"> Back to Form </a>
+    <a href="destroy.php" class="btn"> Forget Me ! </a>
 </main>
 <?php require_once('footer.php'); ?>
