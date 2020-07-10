@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php require_once('header.php'); ?>
 <body class="add">
 <div class="container inner">
@@ -26,6 +27,14 @@
     $profile = null; 
     $link = null;
 
+    //if a value is stored in the session variable, display that information
+    if(isset($_SESSION['name'])) {
+      echo "<h1>".$_SESSION['name']."</h1>";
+    }
+    else {
+      echo "<h1>Unknown User</h1>";
+    }
+
     if(!empty($_GET['id']) && (is_numeric($_GET['id']))) {
       //grab the id from url
       $id = filter_input(INPUT_GET, 'id');
@@ -34,7 +43,7 @@
       //set up our query 
       $sql = "SELECT * FROM songs WHERE user_id = :user_id;"; 
       //prepare our statement
-      $statement = $db->prepare($sql); 
+      $statement = $conn->prepare($sql); 
       //bind 
       $statement->bindParam(':user_id', $id); 
       //execute 
@@ -99,6 +108,7 @@
           <input type="file" name="photo" id="profilepic" value="<?php echo $profile;?>">
         </div>
         <input type="submit" name="submit" value="Submit" class="btn">
+        <a href="destroy.php" class="btn"> Forget Me ! </a>
       </form>
     </main>
 <?php require_once('footer.php'); ?>
